@@ -1,0 +1,6 @@
+- Add framelayout as a place holder for a fragment
+- Create fragment Object new Fragment()
+- Fragment manager: add, replace, remove fragment from a fragment place holder
+- LiveData
+- creating LiveData object using ViewModelProvider
+- using observe pattern on the liveData class
