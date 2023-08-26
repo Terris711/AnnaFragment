@@ -25,33 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setContentView(R.layout.activity_main_landscape);
-            fragmentManager.beginTransaction().add(R.id.new_note_frame, menuFragment).commit();
-            fragmentManager.beginTransaction().add(R.id.note_taking_frame, noteFragment).commit();
-
+            setFragmentLandscape(fragmentManager, noteLiveDataViewModel);
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             setContentView(R.layout.activity_main);
-            noteLiveDataViewModel.getIsMenuFragment().observe(this, new Observer<Integer>() {
-                @Override
-                public void onChanged(Integer integer) {
-                    Fragment fragment = fragmentManager.findFragmentById(R.id.main_frame);
-                    if (noteLiveDataViewModel.getIsMenuFragment().getValue() == 0) {
-
-                        if (fragment == null) {
-                            fragmentManager.beginTransaction().add(R.id.main_frame, menuFragment).commit();
-                        } else {
-                            fragmentManager.beginTransaction().replace(R.id.main_frame, menuFragment).commit();
-                        }
-
-                    } else {
-                        if (fragment == null) {
-                            fragmentManager.beginTransaction().add(R.id.main_frame, noteFragment).commit();
-                        } else {
-                            fragmentManager.beginTransaction().replace(R.id.main_frame, noteFragment).commit();
-                        }
-                    }
-                }
-            });
-
+            setFragmentPortrait(fragmentManager, noteLiveDataViewModel);
         }
 
 
@@ -61,5 +38,34 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void setFragmentLandscape(FragmentManager fragmentManager, NoteLiveData noteLiveDataViewModel) {
+        fragmentManager.beginTransaction().add(R.id.new_note_frame, menuFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.note_taking_frame, noteFragment).commit();
+    }
+
+    private void setFragmentPortrait(FragmentManager fragmentManager, NoteLiveData noteLiveDataViewModel) {
+        noteLiveDataViewModel.getIsMenuFragment().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                Fragment fragment = fragmentManager.findFragmentById(R.id.main_frame);
+                if (noteLiveDataViewModel.getIsMenuFragment().getValue() == 0) {
+
+                    if (fragment == null) {
+                        fragmentManager.beginTransaction().add(R.id.main_frame, menuFragment).commit();
+                    } else {
+                        fragmentManager.beginTransaction().replace(R.id.main_frame, menuFragment).commit();
+                    }
+
+                } else {
+                    if (fragment == null) {
+                        fragmentManager.beginTransaction().add(R.id.main_frame, noteFragment).commit();
+                    } else {
+                        fragmentManager.beginTransaction().replace(R.id.main_frame, noteFragment).commit();
+                    }
+                }
+            }
+        });
     }
 }
