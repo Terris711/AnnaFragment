@@ -1,10 +1,8 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,11 +63,21 @@ public class NoteTakingFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_note_taking2, container, false);
         NoteLiveData liveData = new ViewModelProvider(getActivity()).get(NoteLiveData.class);
         Button addNoteButton = rootView.findViewById(R.id.submit_button);
+        EditText titleEditText = rootView.findViewById(R.id.title_edit_text);
+        EditText noteEditText = rootView.findViewById(R.id.note_edit_text);
+
+
+        Note curNote = liveData.getNote().getValue();
+        if (curNote != null) {
+            noteEditText.setText(curNote.note);
+            titleEditText.setText(curNote.title);
+        }
+
+
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText titleEditText = rootView.findViewById(R.id.title_edit_text);
-                EditText noteEditText = rootView.findViewById(R.id.note_edit_text);
+
                 liveData.setNote(titleEditText.getText().toString(), noteEditText.getText().toString());
                 liveData.setIsMenuFragment(0);
             }
